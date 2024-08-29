@@ -12,18 +12,3 @@ The reference code link: [here](https://github.com/gram-ai/radio-transformer-net
 * TQDM
  
 
-## Citation
-
-If you find this code useful in your research then please cite
-
-```
-@article{o2017introduction,
-  title={An introduction to deep learning for the physical layer},
-  author={O’shea, Timothy and Hoydis, Jakob},
-  journal={IEEE Transactions on Cognitive Communications and Networking},
-  volume={3},
-  number={4},
-  pages={563--575},
-  year={Oct. 2017}
-}
-```
