@@ -5,7 +5,9 @@ This code is for Figure 5.21, 5.22, and 5.23.
 ## Requirements
 
 * Python 
-* Pytorch 
+* Pytorch
+
+* For the version of DQN, you can refer https://github.com/huangkk99/MARLV2X. 
 
 
 
