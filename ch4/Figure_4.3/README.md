@@ -9,7 +9,7 @@
 * TQDM
 
 ## Acknowledgements
-Thank for the excellent code from [here](https://github.com/gram-ai/radio-transformer-networks)
+Thank for the excellent code from [here](https://github.com/gram-ai/radio-transformer-networks).
 
 ## Citation
 
