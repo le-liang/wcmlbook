@@ -1,8 +1,6 @@
-# DeepJSCC
+# DeepJSCC for Image Transmission
 
 This code is a copy from the reference code link for Figure 4.16.
-
-The reference code link: [here](https://github.com/haoyye/End2End_GAN)
 
 ## Requirements
 
