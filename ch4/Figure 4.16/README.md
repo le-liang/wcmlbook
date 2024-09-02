@@ -6,5 +6,5 @@ The reference code link: [here](https://github.com/haoyye/End2End_GAN)
 
 ## Requirements
 
-* Python == 3.6
-* TensorFlow == 1.12.0
+* Python == 3.9
+* Pytorch == 1.12
