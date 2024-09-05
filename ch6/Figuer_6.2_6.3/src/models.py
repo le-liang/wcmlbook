@@ -6,7 +6,6 @@ from torch import nn
 import torch.nn.functional as F
 from torchsummary import summary
 
-# 两层FC
 class MLP(nn.Module):
     def __init__(self, dim_in, dim_hidden, dim_out):
         super(MLP, self).__init__()
@@ -24,7 +23,6 @@ class MLP(nn.Module):
         x = self.layer_hidden(x)
         return self.softmax(x)
 
-# 两层卷积+两层FC
 class CNNMnist(nn.Module):
     def __init__(self, args):
         super(CNNMnist, self).__init__()
@@ -43,7 +41,6 @@ class CNNMnist(nn.Module):
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)
 
-# 两层卷积+一层FC
 class CNNFashion_Mnist(nn.Module):
     def __init__(self, args):
         super(CNNFashion_Mnist, self).__init__()
@@ -64,9 +61,8 @@ class CNNFashion_Mnist(nn.Module):
         out = self.layer2(out)
         out = out.view(out.size(0), -1)
         out = self.fc(out)
-        return out #输出不是softmax
+        return out
 
-# 两层卷积+三层FC
 class CNNCifar(nn.Module):
     def __init__(self, args):
         super(CNNCifar, self).__init__()
