@@ -17,13 +17,11 @@ def mnist_iid(dataset, num_users):
     num_items = int(len(dataset)/num_users)
     dict_users, all_idxs = {}, [i for i in range(len(dataset))]
     for i in range(num_users):
-        # set() 函数创建一个无序不重复元素集, 可进行关系测试, 删除重复数据, 还可以计算交集, 差集, 并集等
         dict_users[i] = set(np.random.choice(all_idxs, num_items,
                                              replace=False))
         all_idxs = list(set(all_idxs) - dict_users[i])
     return dict_users
 
-# 第一种Non-IID设置，每个用户的数据集大小相同但是样本特征差异很大
 def mnist_noniid(dataset, num_users):
     """
     Sample non-I.I.D client data from MNIST dataset
@@ -39,11 +37,11 @@ def mnist_noniid(dataset, num_users):
     labels = dataset.train_labels.numpy()
 
     # sort labels
-    idxs_labels = np.vstack((idxs, labels))                    # <class 'numpy.ndarray'> :  (2, 60000)
-    idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]  # argsort函数返回的是数组值从小到大的索引值，这里是按label排序
+    idxs_labels = np.vstack((idxs, labels))                    
+    idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]  
     idxs = idxs_labels[0, :]
 
-    # divide and assign 2 shards/client   设定100个用户
+    # divide and assign 2 shards/client  
     for i in range(num_users):
         rand_set = set(np.random.choice(idx_shard, 2, replace=False))
         idx_shard = list(set(idx_shard) - rand_set)
@@ -52,7 +50,6 @@ def mnist_noniid(dataset, num_users):
                 (dict_users[i], idxs[rand*num_imgs:(rand+1)*num_imgs]), axis=0)
     return dict_users
 
-# 第二种non-IID设定，用户含的样本数量以及样本特征分布差异均较大
 def mnist_noniid_unequal(dataset, num_users):
     """
     Sample non-I.I.D client data from MNIST dataset s.t clients
@@ -131,7 +128,7 @@ def mnist_noniid_unequal(dataset, num_users):
                     axis=0)
 
         if len(idx_shard) > 0:
-            # Add the leftover shards to the client with minimum images: 有多的分给数据集最少额用户
+            # Add the leftover shards to the client with minimum images: 
             shard_size = len(idx_shard)
             # Add the remaining shard to the client with lowest data
             k = min(dict_users, key=lambda x: len(dict_users.get(x)))
