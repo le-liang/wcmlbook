@@ -7,9 +7,6 @@ from torch import nn
 from torch.utils.data import DataLoader, Dataset
 import copy
 
-# 自定义数据集，继承自torch.utils.data.Dataset，然后重写两个函数：__len__(self)和__getitem__(self, idx)
-# __len__返回数据集大小
-# __getitem__获取到的是item对应的单个数据及标签
 class DatasetSplit(Dataset):
     """An abstract Dataset class wrapped around Pytorch Dataset class.
     """
@@ -33,9 +30,9 @@ class LocalUpdate(object):
             dataset, list(idxs))
         self.device = torch.device('cuda:{}'.format(args.gpu) if torch.cuda.is_available() and args.gpu != -1 else 'cpu')
         # Default criterion set to NLL loss function
-        self.criterion = nn.NLLLoss().to(self.device)   #使用NLL损失函数
+        self.criterion = nn.NLLLoss().to(self.device)   
 
-    # 划分训练数据集8:1:1
+
     def train_val_test(self, dataset, idxs):
         """
         Returns train, validation and test dataloaders for a given dataset
@@ -46,7 +43,7 @@ class LocalUpdate(object):
         idxs_val = idxs[int(0.8*len(idxs)):int(0.9*len(idxs))]
         idxs_test = idxs[int(0.9*len(idxs)):]
 
-        # 通过DataLoader获取批量数据
+
         trainloader = DataLoader(DatasetSplit(dataset, idxs_train),
                                  batch_size=self.args.local_bs, shuffle=True)
         validloader = DataLoader(DatasetSplit(dataset, idxs_val),
@@ -56,7 +53,7 @@ class LocalUpdate(object):
         return trainloader, validloader, testloader
 
     def update_weights(self, model, global_round):
-        # Set mode to train model 网络训练需要设为训练模式
+        # Set mode to train model
         model.train()
         epoch_loss = []
 
@@ -75,7 +72,7 @@ class LocalUpdate(object):
             batch_loss = []
             for batch_idx, (images, labels) in enumerate(self.trainloader):
                 images, labels = images.to(self.device), labels.to(self.device)
-                model.zero_grad()  #梯度设置为0
+                model.zero_grad()  
 
                 log_probs = model(images)
                 loss = self.criterion(log_probs, labels)
@@ -87,28 +84,28 @@ class LocalUpdate(object):
                 loss += prox_term
                 batch_loss.append(loss.item())
 
-                loss.backward()    #求梯度信息
-                optimizer.step()   #进行参数更新
+                loss.backward()   
+                optimizer.step() 
 
                 #if self.args.verbose and (batch_idx % 100 == 0):
                 #    print('| Global Round : {} | Local Epoch : {} | [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 #        global_round, iter, batch_idx * len(images),
                 #        len(self.trainloader.dataset),
-                #        100. * batch_idx / len(self.trainloader), loss.item())) # item（）取出张量具体位置的元素元素值
-                self.logger.add_scalar('loss', loss.item()) #保存程序中的数据，然后利用tensorboard工具来进行可视化的
+                #        100. * batch_idx / len(self.trainloader), loss.item())) 
+                self.logger.add_scalar('loss', loss.item())
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
 
-        return model.state_dict(), sum(epoch_loss) / len(epoch_loss)   # 网络参数，跑完指定epoch之后的本地平均loss
+        return model.state_dict(), sum(epoch_loss) / len(epoch_loss) 
 
     def inference(self, model):
         """ Returns the inference accuracy and loss.
         """
 
-        model.eval()  # 开启模型评估模式
+        model.eval() 
         loss, total, correct = 0.0, 0.0, 0.0
 
-        for batch_idx, (images, labels) in enumerate(self.testloader): # 这里使用的训练集中划分初的测试集
+        for batch_idx, (images, labels) in enumerate(self.testloader): 
             images, labels = images.to(self.device), labels.to(self.device)
 
             # Inference
@@ -125,7 +122,6 @@ class LocalUpdate(object):
         accuracy = correct/total
         return accuracy, loss
 
-# 和上面一样，只是输入指定为测试数据集
 def test_inference(args, model, test_dataset):
     """ Returns the test accuracy and loss.
     """
