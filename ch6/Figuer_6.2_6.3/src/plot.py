@@ -9,7 +9,7 @@ import csv
 data = pd.read_csv(r'./save/1.csv')
 y = []
 for i, row in enumerate(data):
-    if i < 5:  # 取前五行
+    if i < 5:  
         x = row[1:]
         y.append(x)
 
