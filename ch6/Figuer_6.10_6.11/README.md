@@ -1,4 +1,4 @@
-# A code implementation of FedProx
+# A code implementation of Soft_DSGD
 
 This code is a copy from the reference code link for Figure 6.10 & 6.11.
 
