@@ -1,1 +1,0 @@
-This is the code snippet of Exercise 5.15.
